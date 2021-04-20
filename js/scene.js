@@ -19,9 +19,6 @@ const plane2 = new THREE.Mesh(planeGeometry, planeMaterial);
 const gui = new dat.GUI();
 
 const loader = new THREE.TextureLoader();
-const texture = loader.load('../mty_texture_streets.png')
-const heightMap = loader.load('../mty.png')
-
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -29,39 +26,23 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+const stairs = new Stairs({scene})
+stairs.render()
 
-// Objects
-
-const geometry = new THREE.SphereGeometry( 5, 32, 32 );
-const geometryBackground = new THREE.PlaneBufferGeometry(500,500);
-
-// Materials
-const material = new THREE.MeshStandardMaterial({
-    color: 'white',
-    //wireframe: true
-})
-
-const backgroundMaterial = new THREE.MeshStandardMaterial(
-    {color: 'grey'}
-)
-
-const plane = new THREE.Mesh(geometry, material);
-scene.add(plane);
-plane.rotation.x = 181;
-
-
+const buildings = new Buildings({scene})
+buildings.render()
 
 // Lights
 
-const pointLight = new THREE.RectAreaLight(0xffffff, 2, 10, 10)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 6
+const pointLight = new THREE.DirectionalLight(0xffffff, 20, 10, 10)
+const hemiLight = new THREE.HemisphereLight( 0xFF87CEEB, 0x4487CEEB, 0.6 ); 
 scene.add(pointLight)
+scene.add(hemiLight)
 
 gui.add(pointLight.position, 'x')
 gui.add(pointLight.position, 'y')
 gui.add(pointLight.position, 'z')
+
 
 const col = {color: '#00ff00'}
 gui.addColor(col, 'color').onChange(() => {
@@ -96,15 +77,15 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000)
 camera.position.x = 8
-camera.position.y = 0
-camera.position.z = 20
+camera.position.y = 50
+camera.position.z = 50
 scene.add(camera)
 
-gui.add(camera.position, 'x').min(0).max(20);
-gui.add(camera.position, 'y').min(0).max(20);
-gui.add(camera.position, 'z').min(0).max(20);
+gui.add(camera.position, 'x')
+gui.add(camera.position, 'y')
+gui.add(camera.position, 'z')
 
 // Controls
 // const controls = new OrbitControls(camera, canvas)
@@ -117,6 +98,10 @@ const renderer = new THREE.WebGLRenderer({antialiasing: true})
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setClearColor(0xFF87CEEB, 1);
+const fogColor = 0xFF000000;
+const density = 0.01;
+//     scene.fog = new THREE.FogExp2(fogColor, density);
 
 /**
  * Animate
@@ -132,7 +117,6 @@ const tick = () =>
     // Update objects
 
     // Update Orbital Controls
-    plane.rotation.z = .3 * elapsedTime
 
     // Render
     renderer.render(scene, camera)
