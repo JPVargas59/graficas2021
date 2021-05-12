@@ -30,7 +30,6 @@ class Buildings {
                 }
                 scene.add(this.buildings[i][j])
 
-
             }
         }
     }
