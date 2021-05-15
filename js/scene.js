@@ -1,29 +1,14 @@
-
-/*const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.x = 0
-camera.position.y = 0
-camera.position.z = 3
-
-scene.add(camera);
-
-const renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-const planeGeometry = new THREE.laneGeometry(10, 10);
-const planeMaterial = new THREE.MeshStandardMaterial({wireframe: true});
-const plane2 = new THREE.Mesh(planeGeometry, planeMaterial);
-*/
-
-const loader = new THREE.TextureLoader();
+const loader = new THREE.TextureLoader()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+
+
+const buildings = new Buildings({scene})
+buildings.render()
 
 function makeInstance(geometry, color, x) {
     const material = new THREE.MeshPhongMaterial({color});
@@ -79,12 +64,43 @@ upperStreetMesh.position.set(-38.5, 4.5, 0)
 scene.add(upperStreetMesh)
 
 
+const character2 = new THREE.PlaneGeometry(1, 3)
+const texture2 = loader.load('../textureMaps/your_name_mitsuha.png')
+const material2 = new THREE.MeshBasicMaterial({map: texture2, transparent: true})
+const character2Mesh = new THREE.Mesh(character2, material2)
+character2Mesh.position.set(-13,7.2,0)
+scene.add(character2Mesh)
+
+
 const character1 = new THREE.PlaneGeometry(1, 3)
 const texture = loader.load('../textureMaps/your_name_taki.png')
 const material = new THREE.MeshBasicMaterial({map: texture, transparent: true})
 const character1Mesh = new THREE.Mesh(character1, material)
-character1Mesh.position.set(10,10,0)
+character1Mesh.position.set(-17,8.2,0)
 scene.add(character1Mesh)
+
+
+const tree = new THREE.PlaneGeometry(6, 10)
+const treeTexture = loader.load('../textureMaps/tree.png')
+const treeMaterial = new THREE.MeshBasicMaterial({map: treeTexture, transparent: true})
+const treeMesh = new THREE.Mesh(tree, treeMaterial)
+treeMesh.position.set(-33,14,6)
+scene.add(treeMesh)
+
+const tree1Material = new THREE.MeshBasicMaterial({map: treeTexture, transparent: true})
+const tree1Mesh = new THREE.Mesh(tree, tree1Material)
+tree1Mesh.position.set(-33,14,-5)
+scene.add(tree1Mesh)
+
+const tree2Material = new THREE.MeshBasicMaterial({map: treeTexture, transparent: true})
+const tree2Mesh = new THREE.Mesh(tree, tree2Material)
+tree2Mesh.position.set(-33,14,14)
+scene.add(tree2Mesh)
+
+const tree3Material = new THREE.MeshBasicMaterial({map: treeTexture, transparent: true})
+const tree3Mesh = new THREE.Mesh(tree, tree3Material)
+tree3Mesh.position.set(-33,14,-13)
+scene.add(tree3Mesh)
 
 scene.add(stairsStep)
 scene.add(stairs)
@@ -97,11 +113,14 @@ scene.add(stairs2)
 
 // Lights
 
-const pointLight = new THREE.DirectionalLight(0xffffff, 20, 10, 10)
-const hemiLight = new THREE.HemisphereLight( 0xFF87CEEB, 0x4487CEEB, 0.6 ); 
-scene.add(pointLight)
-scene.add(hemiLight)
-
+const particleLight = new THREE.Mesh(
+    new THREE.SphereGeometry( 5, 5, 5 ),
+    new THREE.MeshBasicMaterial( { color: 0xffffff } )
+);
+particleLight.position.set(10, 1000, 0)
+scene.add( particleLight );
+// scene.add(new THREE.AmbientLight( 0xffffff ))
+scene.add(new THREE.DirectionalLight('#ffffff'))
 
 
 /**
@@ -133,10 +152,10 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000)
-camera.position.x = 32
-camera.position.y = 11
-camera.position.z = -18
-camera.rotation.set(x = 2.7046390441579597, y = 1.4787792520724299, z = -2.7463916419071435)
+camera.position.x = -20
+camera.position.y = 9
+camera.position.z = 4.2
+camera.rotation.set(x = 0, y = -1.3, z = -0.06)
 scene.add(camera)
 
 // Controls
@@ -151,27 +170,37 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setClearColor(0xFF87CEEB, 1);
-const fogColor = 0xFF000000;
+const fogColor = 0xFF87CEEB;
 const density = 0.01;
-//     scene.fog = new THREE.FogExp2(fogColor, density);
+scene.fog = new THREE.FogExp2(fogColor, density);
 
 /**
  * Animate
  */
 
 const clock = new THREE.Clock()
+const effect = new OutlineEffect( renderer, {defaultThickness: 0.005} );
+effect.defaultThickness = 0.001
+
 
 const tick = () =>
-{
-
+{   
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    character1Mesh.lookAt(camera.position)
-    // Update Orbital Controls
+    // character1Mesh.lookAt(camera.position)
+    // .lookAt() hace rotar al objeto en todos los ejes, si vieramos la escena desde arriba entonces los personajes parecerían "acostados". 
+    // con esta linea calculamos el angulo en el eje y entre la camara y el personaje para aplicarlo directamente a su rotación
+    character1Mesh.rotation.y = Math.atan2( ( camera.position.x - character1Mesh.position.x ), ( camera.position.z - character1Mesh.position.z ) );
+    character2Mesh.rotation.y = Math.atan2( ( camera.position.x - character2Mesh.position.x ), ( camera.position.z - character2Mesh.position.z ) );
+    treeMesh.rotation.y = Math.atan2( ( camera.position.x - treeMesh.position.x ), ( camera.position.z - treeMesh.position.z ) );
+    tree1Mesh.rotation.y = Math.atan2( ( camera.position.x - tree1Mesh.position.x ), ( camera.position.z - tree1Mesh.position.z ) );
+    tree2Mesh.rotation.y = Math.atan2( ( camera.position.x - tree2Mesh.position.x ), ( camera.position.z - tree2Mesh.position.z ) );
+    tree3Mesh.rotation.y = Math.atan2( ( camera.position.x - tree3Mesh.position.x ), ( camera.position.z - tree3Mesh.position.z ) );
 
     // Render
     renderer.render(scene, camera)
+    effect.render(scene, camera)
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)

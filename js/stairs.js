@@ -10,15 +10,34 @@ class Stairs {
     }
 
     render() {
-        const stepMaterial = new THREE.MeshPhongMaterial({
-            color: 'white'
+
+        const colors = new Uint8Array( 5 );
+
+        for ( let c = 0; c <= colors.length; c ++ ) {
+
+            colors[ c ] = ( c / colors.length ) * 256;
+
+        }
+
+        const gradientMap = new THREE.DataTexture( colors, colors.length, 1, THREE.LuminanceFormat );
+        gradientMap.minFilter = THREE.NearestFilter;
+        gradientMap.magFilter = THREE.NearestFilter;
+        gradientMap.generateMipmaps = false;
+
+        const alpha = 1
+        const beta = 0.5
+        const gamma = 0.9
+        const diffuseColor = new THREE.Color().setHSL( alpha, 0.5, gamma * 0.5 + 0.1 ).multiplyScalar( 1 - beta * 0.2 );
+                    
+        const stepMaterial = new THREE.MeshToonMaterial({
+            color: 'white',
+            gradientMap 
         })
         let stepsGeometries = []
 
         for (let i = 1 ; i <= this.numSteps ; i++) {
             const stepGeometry = new THREE.BoxGeometry(this.stepHeight * 2 * (this.numSteps - i + 1), this.stepWidth,  this.stepDepth)
             stepGeometry.translate(i * -this.stepHeight, i * this.stepHeight, this.stepWidth)
-            console.log(this.stepHeight * (this.numSteps - i))
             stepsGeometries.push(stepGeometry)    
         }
     
