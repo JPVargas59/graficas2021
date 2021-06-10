@@ -3,22 +3,63 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Proyecto graficas</title>
-		<style>
-			body { margin: 0; }
-			canvas {
-				width: 100%;
-				height: 100%;
-			}
-		</style>
-	</head>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+		</head>
 	<body>
-		<script src="js/three.js"></script>
-		<script src="js/outlineEffect.js"></script>
-		<script src="https://rawgithub.com/mrdoob/three.js/r128/examples/js/utils/BufferGeometryUtils.js"></script>
-		<script type="text/javascript" src="js/dat.gui.min.js"></script>
-		<script src="js/stairs.js"></script>
-		<script src="js/buildings.js"></script>
-		<script src="js/scene.js"></script>
-		<script src="js/controls.js"></script>
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container">
+			  <a class="navbar-brand" href="#">Equipo 6</a>
+			  <a class="btn btn-outline-primary" href="scene.html">Ir al proyecto</a>
+			</div>
+		</nav>
+
+		<div class="container">
+			<h1 class="display-1">Proyecto final gráficas computacionales</h1>	
+			<p>Realizado por: Raúl Castellanos Herrero, Sergio Gabriel Diosdado Castelazo y Juan Pablo Vargas Rodríguez </p>
+
+			<h1>Descripción</h1>
+			<p>Este proyecto fue resultado del trabajo del equipo a lo largo de la clase de Gráficas Computacionales durante el semestre Febrero - Mayo 2021.</p>
+
+			<h1>¿Cúal era el reto?</h1>
+			<p>El reto final del curso fue programar una escena utilizando WebGL o Tree.js a base de figuras compuestas.</p>
+			<p>Esta escena debía tener objetos con texturas, fuentes de luz y sombras.</p>
+
+			<h1>Nuestra propuesta</h1>
+			<div class="row">
+				<div class="col">
+					<p>Decidimos recrear una escena icónica de la pélicula <a href="https://en.wikipedia.org/wiki/Your_Name">Your Name</a>.</p>
+					<p>La escena en cuestión la podemos ver en el siguiente video.</p>
+					<p>Sin dar ningún spoiler, decidimos usar esa escena por que cuenta con algunas caracteristicas icónicas que quisimos plasmar en el proyecto:</p>
+					<ul>
+						<li>Las escaleras</li>
+						<li>La ciudad de fondo (ambientación)</li>
+						<li>Los personajes</li>
+						<li>El estilo de anime</li>
+					</ul>
+				</div>
+				<div class="col">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/cnodujk9i8U?start=7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>				</div>
+			</div>
+
+			<h1>El resultado</h1>
+			<p>El resultado final es una escena en la que incluimos controles simples para moverse por la escena (WASD y mouse).</p>
+			<p>Además programamos la creación de la ciudad para que fuera de manera aleatoria y variando las texturas a partir de una lista de texturas que generamos. Le añadimos neblina a la escena para aumentar la inmersión que se puede tener.</p>
+			<p>Nos gustó mucho el efecto animé que conseguimos al hacer que las texturas fueran con ese estilo y que los objetos que se ven afectados por la iluminacion les colocamos una textura de tipo Toon para conseguir ese efecto.</p>
+			<p>Otro efecto que conseguimos fue que los elementos con texturas como los personajes y los árboles, siempre están viendo a la cámara.</p>
+			<p>Todo esto se puede ver al dar click en el botón de abajo.</p>
+			<div class="d-grid gap-2">
+				<a href="scene.html" class="btn btn-primary">Ir a la escena</a>
+			</div>
+		</div>
+
+
+
+		<footer class="mt-5 container">
+			<p>Equipo 6 - Gráficas Computacionales - Proyecto final</p>
+		</footer>
+
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 	</body>
 </html>

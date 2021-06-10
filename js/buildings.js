@@ -23,7 +23,7 @@ class Buildings {
                     color: 'grey', 
                     map: textures[Math.floor(Math.random() * numTextures)]
                 })
-                let height = Math.floor(Math.random() * 200) + 20
+                let height = Math.floor(Math.random() * 100) + 20
                 let width = 30
                 const buildingGeometry = new THREE.BoxGeometry(width, height, width)
                 this.buildings[i][j] = new THREE.Mesh(buildingGeometry, buildingMaterial)
